@@ -1,0 +1,107 @@
+from abc import ABCMeta, abstractmethod
+
+#1 Принцип единственности ответственности (Single Responsibility Principle),
+
+class User:
+    def __init__(self, name: str):
+        self.name = name
+
+    def get_name(self):
+        return self.name
+
+User = User('No name')
+print(User.get_name())
+
+#2 Принцип открытости/закрытости (Open‐Closed Principle),
+
+class Discount:
+    def __init__(self, customer, price):
+        self.customer = customer
+        self.price = price
+
+    def get_discount(self):
+        return self.price * 0,2
+
+class VIPDiscount(Discount):
+
+    def get_discount(self):
+        return super().get_discount() * 2
+
+vip = VIPDiscount('cust', 10)
+print(vip.get_discount())
+
+#3 Принцип подстановки Барбары Лисков (Liskov Substitution Principle),
+
+class User1:
+    def __init__(self, color):
+        self.color = color
+
+    def move(self,horse):
+        return horse
+
+user1_write = User1('white')
+user1_black = User1('black')
+print(user1_black.move('horse'))
+
+#4 Принцип разделения интерфейсов (Interface Segregation Principle),
+
+class CallingDevice():
+	@abstractmethod
+	def make_calls(self):
+		pass
+		
+class MessagingDevice():
+	@abstractmethod
+	def send_sms(self):
+		pass
+		
+class InternetbrowsingDevice():
+	@abstractmethod
+	def browse_internet(self):
+		pass
+		
+class SmartPhone(CallingDevice, MessagingDevice, InternetbrowsingDevice): 
+	def make_calls(self):
+		pass
+	def send_sms(self):
+		pass
+	def browse_internet(self):
+		pass
+		
+class LandlinePhone(CallingDevice):
+	def make_calls(self):
+		pass
+	
+#5 Принцип инверсии зависимостей (Dependency Inversion Principle).
+
+class AuthenticationForUser():
+  	def __init__(self, connector: Connector):
+		self.connection = connector.connect()
+	
+	def authenticate(self, credentials):
+		pass
+	def is_authenticated(self):
+		pass	
+	def last_login(self):
+		pass
+
+class AnonymousAuth(AuthenticationForUser):
+	pass
+
+class GithubAuth(AuthenticationForUser):
+	def last_login(self):
+		pass
+
+class FacebookAuth(AuthenticationForUser):
+	pass
+
+class Permissions():
+	def __init__(self, auth: AuthenticationForUser):
+		self.auth = auth
+		
+	def has_permissions(self):
+		pass
+		
+class IsLoggedInPermissions (Permissions):
+	def last_login(self):
+		return self.auth.last_log
